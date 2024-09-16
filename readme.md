@@ -50,3 +50,62 @@ monostateA.registerUser({
 console.log(monostateA.users); // Output: [ { name: 'Thiago', age: 18 } ]
 console.log(monostateB.users); // Output: [ { name: 'Thiago', age: 18 } ]
 ```
+
+# Strategy
+
+O padrão Strategy permite que você altere dinamicamente o comportamento de um objeto, escolhendo entre diferentes estratégias ou algoritmos que implementam a mesma interface
+
+Garante que todas estrategias irão utilizar o método pay
+
+```ts
+interface TransportStrategy {
+  pay(): void;
+}
+```
+
+Exemplo da estratégia do Uber
+
+```ts
+export class UberStrategy implements TransportStrategy {
+  pay() {
+    console.log("Corrida paga, metodo usado: Uber!");
+  }
+}
+```
+
+Método que altera a estratégia atual
+
+```ts
+setStrategy(strategy: TransportStrategy) {
+  this.strategy = strategy;
+}
+```
+
+Método que executa o pagamento da estratégia atual
+
+```ts
+executePayment() {
+  this.strategy.pay();
+}
+```
+
+Cria um contexto onde a estratégia que será utilizada é a do Uber
+
+```ts
+const transport = new Transport(new UberStrategy());
+```
+
+Executa o pagamento da estratégia atual, ou seja, a do Uber
+
+```ts
+transport.executePayment();
+```
+
+Altera a estratégia para o Metro e executar o método de pagamento
+
+```ts
+transport.setStrategy(new MetroStrategy());
+transport.executePayment();
+```
+
+No exemplo, temos algumas estratégias, como Uber, Táxi e Metrô, e todas elas implementam o método pay(). Na classe Transport, temos o método setStrategy(), que permite definir qual será a estratégia atual. Além disso, o método executePayment() é responsável por chamar o método pay() da estratégia que está sendo utilizada no momento.
